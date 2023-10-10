@@ -8,8 +8,16 @@ const stripe = require("stripe")(process.env.STRIP_KEY);
 require("dotenv").config();
 
 const app = express();
-app.use(cors({ origin: "https://clone-e65e0.web.app/" }));
+app.use(cors({ origin: "https://clone-e65e0.web.app" }));
 // app.use(cors({ origin: true }));
+app.use((req, res, next) => {
+  // res.setHeader("Access-Control-Allow-Origin", "https://algorithmiot.com");
+  res.setHeader("Access-Control-Allow-Origin", "https://clone-e65e0.web.app");
+  // res.setHeader("Access-Control-Allow-Credentials", true);
+  res.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  next();
+});
 app.use(express.json());
 
 app.get("/", (request, response) => response.status(200).send("Hello World"));
