@@ -20,14 +20,30 @@ app.get("/evangadi", (request, response) =>
 app.post("/payments/create", async (request, response) => {
   const total = request.query.total;
 
-  console.log("Payment Request Recieved for this amount >>>", total);
+  if (total > 0) {
+    const payementIntent = await stripe.paymentIntents.create({
+      amount: total,
+      currency: "usd",
+    });
 
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount: total,
-    currency: "usd",
-  });
-  // OK - Created
-  response.status(201).send({ clientSecret: paymentIntent.client_secret });
+    response.status(201).send({
+      clientSecret: payementIntent.client_secret,
+    });
+    console.log("payement request recived for this amount >>>>>>>", total);
+  } else {
+    response.status(200).send({
+      message: "cant process the payement",
+    });
+  }
+
+  //   console.log("Payment Request Recieved for this amount >>>", total);
+
+  //   const paymentIntent = await stripe.paymentIntents.create({
+  //     amount: total,
+  //     currency: "usd",
+  //   });
+  //   // OK - Created
+  //   response.status(201).send({ clientSecret: paymentIntent.client_secret });
 });
 
 app.listen(process.env.PORT, console.log("amazon backend server"));
