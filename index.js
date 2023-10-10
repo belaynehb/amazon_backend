@@ -8,7 +8,7 @@ const stripe = require("stripe")(process.env.STRIP_KEY);
 require("dotenv").config();
 
 const app = express();
-app.use(cors());
+app.use(cors({ origin: "https://clone-e65e0.web.app/" }));
 // app.use(cors({ origin: true }));
 app.use(express.json());
 
